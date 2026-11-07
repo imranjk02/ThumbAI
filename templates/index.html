@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThumbAI - Thumbnail Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="app">
+    <aside class="sidebar">
+        <div class="logo">✦ Thumb<span>AI</span></div>
+        <nav>
+            <a href="#" class="active">⌂ Dashboard</a>
+            <a href="#analyzer">▣ Thumbnail Analyzer</a>
+            <a href="#builder">✎ Thumbnail Builder</a>
+            <a href="#suggestions">✦ AI Suggestions</a>
+            <a href="/collection">▣ My Collection</a>
+        </nav>
+        <div class="sidebar-bottom">
+    <div class="account-links">
+        <p class="account-title">ACCOUNT</p>
+        <a href="/signin" class="account-link">⇥ <span>Sign In</span></a>
+        <a href="/signup" class="account-link signup-link">✦ <span>Sign Up</span></a>
+    </div>
+    <div class="sidebar-info">
+        <p>AI POWERED TOOL</p>
+        <small>Build better thumbnails with intelligent insights.</small>
+    </div>
+</div>
+    </aside>
+    <main class="main">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">CREATOR STUDIO / AI ANALYTICS</p>
+                <h1>Thumbnail Analyzer</h1>
+                <p class="subtitle">Analyze, optimize, and improve your visual content.</p>
+            </div>
+            <div class="profile">✦</div>
+        </header>
+        <section class="hero" id="analyzer">
+            <div class="hero-content">
+                <span class="badge">✦ AI-POWERED ANALYSIS</span>
+                <h2>Make every thumbnail<br><span>stand out.</span></h2>
+                <p>Upload your thumbnail and receive AI-powered visual insights, quality metrics, and improvement recommendations.</p>
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <label for="thumbnail" class="upload-box">
+                        <div class="upload-icon">↑</div>
+                        <strong>Upload your thumbnail</strong>
+                        <span>PNG, JPG, JPEG or WEBP · Max 10MB</span>
+                        <input type="file" id="thumbnail" name="thumbnail" accept="image/png,image/jpeg,image/webp" required>
+                    </label>
+                    <div class="preview-container" id="previewContainer">
+                        <img id="previewImage" alt="Thumbnail preview">
+                    </div>
+                    <button type="submit" id="analyzeBtn">Analyze Thumbnail →</button>
+                </form>
+                <p id="status"></p>
+            </div>
+            <div class="hero-visual">
+                <div class="visual-card">
+                    <span>THUMBNAIL INTELLIGENCE</span>
+                    <div class="visual-circle">✦</div>
+                    <h3>Visual<br>Performance</h3>
+                    <p>AI-powered insights</p>
+                    <div class="visual-lines">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="results-section" id="results">
+            <div class="section-heading">
+                <div><p class="eyebrow">ANALYSIS REPORT</p><h2>Thumbnail Insights</h2></div>
+                <span class="report-status">● READY</span>
+            </div>
+            <div class="metrics">
+                <div class="metric-card"><span>RESOLUTION</span><h3 id="resolution">—</h3><p>Image dimensions</p></div>
+                <div class="metric-card"><span>BRIGHTNESS</span><h3 id="brightness">—</h3><p>Average brightness</p></div>
+                <div class="metric-card"><span>CONTRAST</span><h3 id="contrast">—</h3><p>Image contrast</p></div>
+                <div class="metric-card"><span>ASPECT RATIO</span><h3 id="aspectRatio">—</h3><p>Width / height</p></div>
+                <div class="metric-card"><span>QUALITY SCORE</span><h3 id="qualityScore">—</h3><p>Technical image quality / 100</p></div>
+                <div class="metric-card"><span>TEXT DETECTION</span><h3 id="textDetected">—</h3><p>OCR text detection</p></div>
+            </div>
+
+            <div class="analysis-grid">
+                <div class="analysis-card">
+                    <div class="card-heading"><h3>Image Analysis</h3><span>01</span></div>
+                    <div id="imageAnalysis" class="analysis-content">Upload a thumbnail to view technical image metrics.</div>
+                </div>
+                <div class="analysis-card" id="suggestions">
+                    <div class="card-heading"><h3>AI Recommendations</h3><span>02</span></div>
+                    <div id="aiAnalysis" class="analysis-content">AI-generated suggestions will appear here.</div>
+                </div>
+                <div class="analysis-card"><h3>Detected Text</h3><pre id="detectedText">No text detected yet.</pre></div>
+                <div class="analysis-card">
+                    <h3>CTR Prediction</h3>
+                    <p>Click Probability<strong id="clickProbability">--%</strong></p>
+                    <p>Engagement Potential<strong id="engagementPotential">--%</strong></p>
+                    <p>Predicted CTR Score<strong id="predictedCTR">--/100</strong></p>
+                    <p id="ctrMessage">Analyze a thumbnail to see results.</p>
+                </div>
+                <div class="analysis-card">
+                    <h3>Heatmap Analysis</h3>
+                    <img id="heatmapImage" src="" alt="Attention Heatmap" style="width: 100%; border-radius: 10px;">
+                    <p>Attention Area:<strong id="attentionArea">--</strong></p>
+                    <p>Hotspots:<span id="hotspots">--</span></p>
+                    <p>Dead Zones:<span id="deadZones">--</span></p>
+                    <p>Subject Focus:<span id="subjectFocus">--</span></p>
+                </div>
+            </div>
+        </section>
+
+        <section class="builder-section" id="builder">
+    <div class="builder-header">
+        <div>
+            <p class="eyebrow">✦ AI THUMBNAIL CREATOR</p>
+            <h2>Create Your Thumbnail</h2>
+            <p>Generate an AI visual, add your image, and customize your headline.</p>
+        </div>
+        <div class="builder-badge">AI POWERED</div>
+    </div>
+
+    <div class="builder-layout">
+        <div class="builder-panel">
+            <div class="panel-title"><span>01</span><h3>Creation Settings</h3></div>
+            <form id="promptForm" class="prompt-form">
+                <div class="form-group">
+                    <label for="thumbnailPrompt">Describe Your Thumbnail</label>
+                    <textarea
+                        id="thumbnailPrompt"
+                        placeholder="Example: A futuristic AI robot with blue and purple neon lighting, cinematic background, dramatic composition..."
+                        rows="5"
+                        maxlength="1000"
+                        required></textarea>
+                    <div class="prompt-hint">Describe the subject, style, lighting, colors, and mood.</div>
+                </div>
+
+                <div class="prompt-examples">
+                    <span>Quick prompts</span>
+                    <button type="button" onclick="setPrompt('A futuristic gaming setup with neon lights and a professional gamer')">🎮 Gaming</button>
+                    <button type="button" onclick="setPrompt('A cinematic travel thumbnail showing beautiful mountains and a sunset')">🌄 Travel</button>
+                    <button type="button" onclick="setPrompt('A modern AI technology thumbnail with futuristic visuals and glowing effects')">🤖 Technology</button>
+                </div>
+
+                <div class="form-group">
+                    <label for="personImage">Add Your Image</label>
+                    <label class="file-upload"><span class="upload-icon">↑</span>
+                    <span><strong id="personFileName">Choose your image</strong><small>PNG, JPG or WEBP</small></span>
+                    <input type="file" id="personImage" accept="image/png,image/jpeg,image/webp"></label>
+                <div id="personPreview" class="person-preview" style="display:none;"><img id="personPreviewImage" alt="Your uploaded image"></div>
+</div>
+                <div class="form-group">
+                    <label for="headlineText">Thumbnail Headline</label>
+                    <input type="text" id="headlineText" placeholder="AI WILL CHANGE EVERYTHING" maxlength="100">
+                </div>
+                <div class="settings-row">
+                    <div class="form-group">
+                        <label for="fontSize">Font Size</label>
+                        <input type="number" id="fontSize" value="80" min="30" max="150">
+                    </div>
+                    <div class="form-group">
+                        <label for="textColor">Text Color</label>
+                        <div class="color-control">
+                            <input type="color" id="textColor" value="#FFFFFF">
+                            <span>Choose color</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="settings-row">
+                    <div class="form-group">
+                        <label for="textPosition">Text Position</label>
+                        <select id="textPosition">
+                            <option value="center">Center</option>
+                            <option value="top">Top</option>
+                            <option value="bottom">Bottom</option>
+                            <option value="left">Left</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="imageRatio">Aspect Ratio</label>
+                        <select id="imageRatio">
+                            <option value="16:9">16:9 — YouTube</option>
+                            <option value="1:1">1:1 — Square</option>
+                            <option value="4:5">4:5 — Social</option>
+                            <option value="9:16">9:16 — Shorts</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" id="generatePromptBtn" class="generate-btn">✦ Generate Thumbnail with AI</button>
+            </form>
+            <p id="promptStatus" class="builder-status"></p>
+        </div>
+        <div class="builder-preview-panel">
+            <div class="panel-title">
+                <span>02</span>
+                <h3>Preview</h3>
+            </div>
+            <div id="promptPreview" class="thumbnail-preview" style="display:none;">
+                <div class="preview-label">GENERATED THUMBNAIL</div>
+                <div class="image-wrapper">
+                    <img id="promptImage" alt="AI Generated Thumbnail">
+                </div>
+                <div class="preview-info">
+                    <span>1280 × 720</span>
+                    <span>16:9</span>
+                    <span>AI Generated</span>
+                </div>
+                <a id="promptDownload" download="ai-thumbnail.jpg" class="download-btn">
+                    ↓ Download Thumbnail
+                </a>
+            </div>
+            <div id="emptyPreview" class="empty-preview">
+                <div class="empty-icon">✦</div>
+                <h3>Your thumbnail will appear here</h3>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+        <footer><p>© 2026 ThumbAI · Automated Thumbnail Analyzer and Builder</p></footer>
+    </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

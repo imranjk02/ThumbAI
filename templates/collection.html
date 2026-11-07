@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Collection - ThumbAI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="collection-page">
+    <header class="collection-topbar">
+        <a href="/" class="auth-logo">✦ Thumb<span>AI</span></a>
+        <div class="collection-actions">
+            <a href="/">Home</a>
+            <a href="/#builder">Create Thumbnail</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </header>
+    <main class="collection-main">
+        <div class="collection-heading">
+            <div>
+                <p class="eyebrow">YOUR CREATIVE LIBRARY</p>
+                <h1>My Collection</h1>
+                <p>Your generated thumbnails in one place.</p>
+            </div>
+            <a href="/#builder" class="collection-create-btn">✦ Create New</a>
+        </div>
+        <div class="collection-grid">
+            {% for thumbnail in thumbnails %}
+            <div class="collection-card">
+                <div class="collection-image">
+                    <img src="{{ url_for('static', filename='uploads/' + thumbnail.filename) }}" alt="Thumbnail">
+                </div>
+                <div class="collection-card-content">
+                    <h3>{{ thumbnail.headline or "Untitled Thumbnail" }}</h3>
+                    <p>{{ thumbnail.created_at.strftime('%d %B %Y') }}</p>
+                    <div class="collection-card-actions">
+                        <a href="{{ url_for('download_thumbnail', thumbnail_id=thumbnail._id) }}" class="download-btn">
+                            ↓ Download
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="collection-empty">
+                <div>
+                    <div class="empty-icon">✦</div>
+                    <h2>No thumbnails yet</h2>
+                    <p>Generate a thumbnail and it will appear here.</p>
+                    <a href="/#builder">Create Thumbnail →</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+</div>
+</body>
+</html>
