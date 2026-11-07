@@ -8,9 +8,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Tesseract path
-pytesseract.pytesseract.tesseract_cmd = (r"C:\Program Files\Tesseract-OCR\tesseract.exe")
+import shutil
 
+if os.name == "nt":
+    pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+else:
+    pytesseract.pytesseract.tesseract_cmd = shutil.which("tesseract")
 # IMAGE ANALYSIS
 def analyze_image(image_path):
     image = Image.open(image_path).convert("RGB")
