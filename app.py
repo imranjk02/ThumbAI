@@ -240,4 +240,5 @@ def download_thumbnail(thumbnail_id):
     return send_file(filepath, as_attachment=True, download_name="thumbai-thumbnail.jpg")
 
 if __name__ == "__main__":
-    app.run(debug=False, port=5000)
+    import os
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))

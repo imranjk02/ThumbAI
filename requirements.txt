@@ -1,6 +1,9 @@
 Flask
-requests
+gunicorn
 python-dotenv
-Pillow
-google-genai
 pymongo
+google-genai
+opencv-python-headless
+Pillow
+pytesseract
+numpy
