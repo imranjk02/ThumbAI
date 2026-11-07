@@ -80,12 +80,12 @@ def analyze():
         })
 
     except Exception as e:
-    import traceback
-    traceback.print_exc()
-    return jsonify({
-        "success": False,
-        "error": str(e)
-    }), 500
+        import traceback
+        traceback.print_exc()
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
 
 # MANUAL THUMBNAIL BUILDER - PILLOW
 @app.route("/api/build", methods=["POST"])
