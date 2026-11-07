@@ -67,36 +67,83 @@ def run_ocr(image):
 
 def detect_text(image_path):
     image = cv2.imread(image_path)
+
     if image is None:
-        return {"success": False,"text_detected": False,"extracted_text": "","word_count": 0,"confidence": 0,"error": "Unable to read image"}
+        return {
+            "success": False,
+            "text_detected": False,
+            "extracted_text": "",
+            "word_count": 0,
+            "confidence": 0,
+            "error": "Unable to read image"
+        }
 
-    image = cv2.resize(image, None, fx=2, fy=2, interpolation=cv2.INTER_CUBIC)
-    gray = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
-    gray = cv2.equalizeHist(gray)
-    data = pytesseract.image_to_data(gray,config="--oem 3 --psm 11",output_type=pytesseract.Output.DICT)
-    words = []
-    confidences = []
+    try:
+        # Resize large images to reduce memory usage
+        height, width = image.shape[:2]
+        max_dimension = 1280
 
-    for i, word in enumerate(data["text"]):
-        word = word.strip()
-        try:
-            confidence = float(data["conf"][i])
-        except:
-            confidence = 0
+        if max(height, width) > max_dimension:
+            scale = max_dimension / max(height, width)
+            image = cv2.resize(
+                image,
+                None,
+                fx=scale,
+                fy=scale,
+                interpolation=cv2.INTER_AREA
+            )
 
-        if word and confidence >= 30:
-            words.append(word)
-            confidences.append(confidence)
-    text = " ".join(words).strip()
-    average_confidence = (sum(confidences) / len(confidences)if confidences else 0)
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        gray = cv2.equalizeHist(gray)
 
-    return {
-        "success": True,
-        "text_detected": bool(text),
-        "extracted_text": text if text else "No text detected.",
-        "word_count": len(words),
-        "confidence": round(average_confidence, 2)
-    }
+        data = pytesseract.image_to_data(
+            gray,
+            config="--oem 3 --psm 11",
+            output_type=pytesseract.Output.DICT,
+            timeout=12
+        )
+
+        words = []
+        confidences = []
+
+        for i, word in enumerate(data["text"]):
+            word = word.strip()
+
+            try:
+                confidence = float(data["conf"][i])
+            except (ValueError, TypeError):
+                confidence = 0
+
+            if word and len(word) >= 2 and confidence >= 30:
+                words.append(word)
+                confidences.append(confidence)
+
+        text = " ".join(words).strip()
+
+        average_confidence = (
+            sum(confidences) / len(confidences)
+            if confidences else 0
+        )
+
+        return {
+            "success": True,
+            "text_detected": bool(text),
+            "extracted_text": text if text else "No text detected.",
+            "word_count": len(words),
+            "confidence": round(average_confidence, 2)
+        }
+
+    except Exception as e:
+        print("OCR Error:", str(e))
+
+        return {
+            "success": False,
+            "text_detected": False,
+            "extracted_text": "OCR temporarily unavailable.",
+            "word_count": 0,
+            "confidence": 0,
+            "error": str(e)
+        }
 
 # CTR PREDICTION
 def predict_ctr(image_analysis, text_analysis):
