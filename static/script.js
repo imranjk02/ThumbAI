@@ -32,7 +32,18 @@ if (form) {
 
         try {
             const response = await fetch("/api/analyze", {method: "POST",body: formData});
-            const data = await response.json();
+            const responseText = await response.text();
+
+            let data;
+
+            try {
+                data = JSON.parse(responseText);
+            } catch (error) {
+                console.error("Server response:", responseText);
+                throw new Error(
+                    `Server returned HTML instead of JSON. HTTP Status: ${response.status}`
+                );
+            }
             if (!response.ok || data.error) {throw new Error(data.error || "Analysis failed");}
             const image = data.image_analysis || {};
             document.getElementById("resolution").textContent = image.resolution || "—";
